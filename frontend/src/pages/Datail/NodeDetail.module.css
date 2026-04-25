@@ -1,0 +1,432 @@
+.container {
+  display: flex;
+  height: 100vh;
+  background: #1c1c1e;
+  color: #e1e1e0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Панели */
+.sidePanel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  background: #2a2a2c;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  z-index: 100;
+  border: 1px solid #3a3a3c;
+}
+
+.left {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.right {
+  right: 0;
+  transform: translateX(100%);
+}
+
+.open {
+  transform: translateX(0);
+}
+
+/* Кнопки */
+.panelToggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 80px;
+  background: #2a2a2c;
+  border: 1px solid #3a3a3c;
+  color: #a9967f;
+  font-size: 10px;
+  cursor: pointer;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.panelToggle:hover {
+  background: #3a3a3c;
+  color: #e1e1e0;
+  width: 20px;
+}
+
+.leftToggle {
+  left: 0;
+  border-radius: 0 3px 3px 0;
+  border-left: none;
+}
+
+.rightToggle {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+  border-right: none;
+}
+
+/* Заголовок панели */
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #252526;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #7b7061;
+  font-size: 20px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.closeBtn:hover {
+  background: #3a3a3c;
+  color: #e1e1e0;
+}
+
+/* Контент панели */
+.panelContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+/* Текущая БД */
+.currentDb {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #1c1c1e;
+  border-radius: 4px;
+  border: 1px solid #3a3a3c;
+}
+
+.currentDb label {
+  display: block;
+  color: #7b7061;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.dbName {
+  color: #a9967f;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Список БД */
+.dbList {
+  margin-bottom: 1.5rem;
+}
+
+.dbItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.dbItem:hover {
+  background: #3a3a3c;
+  border-color: #a9967f;
+}
+
+.active {
+  background: rgba(169, 150, 127, 0.1);
+  border-color: #a9967f;
+}
+
+.dbStatusIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3a3a3c;
+}
+
+.active .dbStatusIndicator {
+  background: #71b34f;
+  box-shadow: 0 0 6px #71b34f;
+}
+
+.dbBadge {
+  background: #a9967f;
+  color: #1c1c1e;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Навигация */
+.navLink {
+  display: block;
+  padding: 0.75rem;
+  color: #a9967f;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #3a3a3c;
+  transition: all 0.2s;
+}
+
+.navLink:hover {
+  background: #3a3a3c;
+  border-color: #a9967f;
+}
+
+/* Центральная часть */
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Шапка узла */
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 2rem;
+  background: #252526;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nodeLabel {
+  color: #a9967f;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nodeId {
+  color: #7b7061;
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: #1c1c1e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #3a3a3c;
+}
+
+/* Статистика */
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.statLabel {
+  color: #7b7061;
+}
+
+.statValue {
+  color: #a9967f;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Контент */
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Свойства */
+.propertiesSection {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.propertiesSection h2 {
+  color: #a9967f;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.propertiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.propertyCard {
+  background: #2a2a2c;
+  border-radius: 4px;
+  padding: 1rem;
+  border-left: 3px solid #a9967f;
+}
+
+.propKey {
+  display: block;
+  color: #7b7061;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.propValue {
+  display: block;
+  color: #e1e1e0;
+  font-size: 0.95rem;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+/* Загрузка и ошибки */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #a9967f;
+  font-size: 1.2rem;
+}
+
+.errorPage {
+  justify-content: center;
+  align-items: center;
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 2rem;
+}
+
+.errorMessage {
+  color: #F44336;
+  margin-bottom: 1.5rem;
+}
+
+.retryBtn {
+  background: #a9967f;
+  color: #1c1c1e;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.backLink {
+  display: block;
+  color: #7b7061;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: #a9967f;
+}
+
+/* Правая панель — связанные узлы */
+.relatedNodesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.emptyMessage {
+  color: #7b7061;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.relatedNodeItem {
+  background: #1c1c1e;
+  border: 1px solid #3a3a3c;
+  border-radius: 4px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.relatedNodeItem:hover {
+  border-color: #a9967f;
+  background: #252526;
+}
+
+.relDirection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.outgoing {
+  color: #71b34f;
+  font-weight: bold;
+}
+
+.incoming {
+  color: #F44336;
+  font-weight: bold;
+}
+
+.relType {
+  color: #a9967f;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.nodeInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.relatedNodeItem .nodeLabel {
+  color: #e1e1e0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nodeIdShort {
+  color: #7b7061;
+  font-family: monospace;
+  font-size: 0.75rem;
+}
