@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
 from pathlib import Path
-from nutbd.manager import Manager
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 from nutbd.manager import Manager
@@ -12,7 +12,6 @@ from nutbd.core import Node, Relationship
 
 
 app = FastAPI(title="NutDB API")
-manager_api = Manager()
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +27,10 @@ manager = Manager()
 class QueryRequest(BaseModel):
     database: str
     query: str
+
+
+class DatabaseRequest(BaseModel):
+    name: str
 
 
 def serialize_node(node: Node) -> dict:
@@ -49,11 +52,23 @@ def serialize_rel(rel: Relationship) -> dict:
         **rel.props
     }
 
+
 @app.get("/api/databases")
 def list_databases():
     """Возвращает список бд"""
-    databases = manager_api.list_dbs()
-    return {"databases" : databases}
+    databases = manager.list_dbs()
+    return {"databases": databases}
+
+
+@app.post("/api/database")
+def create_database(request: DatabaseRequest):
+    """Создаёт новую базу данных."""
+    if manager.exists(request.name):
+        raise HTTPException(status_code=400, detail=f"База данных '{request.name}' уже существует")
+    
+    manager.create(request.name)
+    return {"message": f"База данных '{request.name}' создана", "database": request.name}
+
 
 @app.post("/api/query")
 def query(request: QueryRequest):
@@ -72,7 +87,6 @@ def query(request: QueryRequest):
         
         for row in result:
             if isinstance(row, dict):
-                # Результат RETURN: {'n': Node, 'r': Relationship}
                 for key, value in row.items():
                     if isinstance(value, Node):
                         node_id = str(value.id)
@@ -83,13 +97,11 @@ def query(request: QueryRequest):
                         relationships.append(serialize_rel(value))
             
             elif isinstance(row, Node):
-                # Прямой возврат Node (например из CREATE)
                 node_id = str(row.id)
                 if node_id not in nodes:
                     nodes[node_id] = serialize_node(row)
             
             elif isinstance(row, Relationship):
-                # Прямой возврат Relationship
                 relationships.append(serialize_rel(row))
         
         return {
@@ -100,19 +112,21 @@ def query(request: QueryRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 @app.get("/api/database/{db_name}/node/{node_id}")
-def get_node(db_name:str, node_id:str):
+def get_node(db_name: str, node_id: str):
     """Получаем узел по id"""
     if not manager.exists(db_name):
-        raise HTTPException(status_code=404, detail=f"Database {db_name} not found")
+        raise HTTPException(status_code=404, detail=f"База данных {db_name} не найдена")
     
     graph = manager.open(db_name)
     node = graph.get_node(node_id)
     
     if not node:
-        raise HTTPException(status_code=404, detail=f"Node {node_id} not found")
+        raise HTTPException(status_code=404, detail=f"Узел {node_id} не найден")
     
     return serialize_node(node)
+
 
 if __name__ == "__main__":
     import uvicorn

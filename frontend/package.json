@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "fix-encoding": "powershell -c 'gci *.jsx -r | % { sc $_.fs.path (gc $_.fs.path -raw -enc byte | ? {$_-ne0}) -enc utf8 }'",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
